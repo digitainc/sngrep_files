@@ -1,0 +1,60 @@
+# SNGREP is a nifty little tool that can make a VoIP Engineer's troubleshooting tasks so much easier
+# While it is not intended for live monitoring on a long term basis, with a few Linux commands one
+# could actually achieve that.  So the following command, when run directly from the terminal, will
+# achieve the following:
+
+# An SNGREP instance that runs for X amount of time (21600 seconds in this case), kills and restarts itself after a 
+# 1 second pause (to allow a Cntrl+C breakout)(because of the while loop), and saves a pcap of the capture to
+# the location specified using the -O switch.
+
+
+
+while [ 1 ]; do timeout -k9 21600 sngrep -O "/var/log/sngrep/sngrep_capture_$(date +%F-%H-%M-%S).pcap"; sleep 1; done
+
+
+
+# TO USE THE COMMAND ABOVE, you need to have the following in your .sngreprc file
+set background dark
+set capture.device any
+set capture.limit 10000   #<=== this sets the capture limit
+set capture.rotate on     #<=== this turns on capture rotation
+set cf.deltatime on
+set cf.forceraw on
+set cf.highlight bold
+set cf.localhighlight on
+set cf.media on
+set cf.scrollstep 4
+set cf.sdpinfo full
+set cf.splitcallid on
+set cl.autoscroll on
+set cl.column0 index
+set cl.column1 date
+set cl.column2 time
+set cl.column3 method
+set cl.column4 sipfrom
+set cl.column4.width 35
+set cl.column5 sipto
+set cl.column5.width 35
+set cl.column6 msgcnt
+set cl.column7 src
+set cl.column8 state
+set colormode callid
+set displayalias off
+set eep.listen off
+set eep.listen.address 0.0.0.0
+set eep.listen.pass myHep
+set eep.listen.port 9060
+set eep.listen.version 3
+set eep.send off
+set eep.send.address 10.1.1.1
+set eep.send.pass myHep
+set eep.send.port 9060
+set eep.send.version 3
+set exitprompt on
+set filter.methods REGISTER,INVITE    <=== Optional, but I chose to enable this filter at launch.  The other methods are still capture, but not displayed.
+set hintkeyalt off
+set savepath /root
+set sip.noincomplete on
+set syntax on
+set syntax.branch on
+set syntax.tag on
